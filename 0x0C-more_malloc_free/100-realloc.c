@@ -1,51 +1,38 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 /**
- * simple_print_buffer - prints buffer in hexa
- * @buffer: the address of memory to print
- * @size: the size of the memory to print
- *
- * Return: Nothing.
- */
-void simple_print_buffer(char *buffer, unsigned int size)
-{
-unsigned int i;
-i = 0;
-while (i < size)
-{
-if (i % 10)
-{
-printf(" ");
-}
-if (!(i % 10) && i)
-{
-printf("\n");
-}
-printf("0x%02x", buffer[i]);
-i++;
-}
-printf("\n");
-}
-/**
- * main - check the code for
- *
- * Return: Always 0.
- */
-int main(void)
+* _realloc - reallocates a memory block using malloc and free
+*
+* @ptr: pointer to the memory previously allocated
+* @old_size:is the size, in bytes, of the allocated space for ptr
+* @new_size: the new size, in bytes of the new memory block
+*
+* Return: pointer allocate new size memory, or NULL
+*/
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
 char *p;
-int i;
-p = malloc(sizeof(char) * 10);
-p = _realloc(p, sizeof(char) * 10, sizeof(char) * 98);
-i = 0;
-while (i < 98)
+unsigned int i, n = new_size;
+char *oldp = ptr;
+if (ptr == NULL)
 {
-p[i++] = 98;
+p = malloc(new_size);
+return (p);
 }
-simple_print_buffer(p, 98);
-free(p);
-return (0);
+else if (new_size == 0)
+{
+free(ptr);
+return (NULL);
+}
+else if (new_size == old_size)
+return (ptr);
+p = malloc(new_size);
+if (p == NULL)
+return (NULL);
+if (new_size > old_size)
+n = old_size;
+for (i = 0; i < n; i++)
+p[i] = oldp[i];
+free(ptr);
+return (p);
 }
 
